@@ -1,10 +1,8 @@
 // write your code here
 const imagesArray = []
+const commentsArray = []
 
 
-
- 
-    
 function createImgCard(image){
     let imgSection = document.querySelector(".image-container")
     let imgCard = document.createElement("div")
@@ -31,12 +29,27 @@ function createImgCard(image){
     let likeButton = document.createElement("button")
     likeButton.setAttribute("class", "like-button")
     likeButton.innerText = "♥"
-
     likesSection.append(numOfLike, likeButton)
 
-    imgCard.append(title, postImg, likesSection)
-}
+    let commentList = document.createElement("ul")
+    commentList.setAttribute("class", "comments")
+    commentList.setAttribute("id", image.id)
 
+    let commentForm = document.createElement("form")
+    commentForm.setAttribute("class", "comment-form")
+
+    let formInput = document.createElement("input")
+    formInput.setAttribute("class", "comment-input")
+    formInput.setAttribute("type","text")
+    formInput.setAttribute("placeholder","Leave your comment here")
+
+    let commentButton = document.createElement("button")
+    commentButton.setAttribute("class", "comment-button")
+    commentButton.innerText = "Post"
+
+    commentForm.append(formInput, commentButton)
+    imgCard.append(title, postImg, likesSection, commentList, commentForm)
+}
 
 
 fetch("http://localhost:3000/images")
@@ -46,5 +59,25 @@ fetch("http://localhost:3000/images")
     .then(function(images){
         let imagesArray = images
         for(image of imagesArray) createImgCard(image)
-        console.log(imagesArray)
+        
+    })
+
+function displayComment (comment){
+    let belongedToCommentList = document.getElementById(comment.imageId)
+
+    let commentContent = document.createElement("li")
+    commentContent.innerText = comment.content
+
+    belongedToCommentList.append(commentContent)
+
+}
+
+fetch("http://localhost:3000/comments")
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(comments){
+        let commentsArray = comments
+        for (comment of commentsArray) displayComment(comment)
+        console.log(commentsArray)
     })
