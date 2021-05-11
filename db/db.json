@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Coder dog",
-      "likes": 10,
+      "likes": 16,
       "image": "./assets/coder-dog.png"
     },
     {
@@ -11,6 +11,30 @@
       "title": "Coder cats",
       "likes": 7,
       "image": "./assets/coder-cat.jpeg"
+    },
+    {
+      "title": "Hello world",
+      "likes": 7,
+      "image": "https://t2.ea.ltmcdn.com/en/images/6/8/9/happy_dog_names_male_and_female_2986_orig.jpg",
+      "id": 3
+    },
+    {
+      "title": "Hello world",
+      "likes": 0,
+      "image": "https://t2.ea.ltmcdn.com/en/images/6/8/9/happy_dog_names_male_and_female_2986_orig.jpg",
+      "id": 4
+    },
+    {
+      "title": "Hello world",
+      "likes": 0,
+      "image": "https://t2.ea.ltmcdn.com/en/images/6/8/9/happy_dog_names_male_and_female_2986_orig.jpg",
+      "id": 5
+    },
+    {
+      "title": "bug fixed~",
+      "likes": 0,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKCIFlGHnjHtueKOZNv3QOzl1dGs8j7v3eAg&usqp=CAU",
+      "id": 6
     }
   ],
   "comments": [
@@ -55,9 +79,84 @@
       "id": 8
     },
     {
-      "content": "so cute",
-      "imageId": 1,
+      "content": "NICE",
+      "imageId": 6,
       "id": 9
+    },
+    {
+      "content": "",
+      "imageId": 6,
+      "id": 10
+    },
+    {
+      "content": "NICE",
+      "imageId": 6,
+      "id": 11
+    },
+    {
+      "content": "so cute",
+      "imageId": 5,
+      "id": 12
+    },
+    {
+      "content": "NICE",
+      "imageId": 6,
+      "id": 13
+    },
+    {
+      "content": "NICE",
+      "imageId": 6,
+      "id": 14
+    },
+    {
+      "content": "",
+      "imageId": 6,
+      "id": 15
+    },
+    {
+      "content": "lovely",
+      "imageId": 3,
+      "id": 16
+    },
+    {
+      "content": "",
+      "imageId": 2,
+      "id": 17
+    },
+    {
+      "content": "NICE",
+      "imageId": 2,
+      "id": 18
+    },
+    {
+      "content": "lovely",
+      "imageId": 1,
+      "id": 19
+    },
+    {
+      "content": "lovely",
+      "imageId": 1,
+      "id": 20
+    },
+    {
+      "content": "lovely",
+      "imageId": 1,
+      "id": 21
+    },
+    {
+      "content": "NICE",
+      "imageId": 1,
+      "id": 22
+    },
+    {
+      "content": "NICE",
+      "imageId": 5,
+      "id": 23
+    },
+    {
+      "content": "NICE",
+      "imageId": 4,
+      "id": 24
     }
   ]
 }

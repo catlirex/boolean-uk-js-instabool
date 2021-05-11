@@ -32,7 +32,6 @@ function createImgCard(image){
     likesSection.append(numOfLike, likeButton)
     likeButton.addEventListener('click', function(){
         image.likes ++
-        console.log(image.likes)
         fetch(`http://localhost:3000/images/${image.id}`,{
             method:"PATCH",
             headers:{
@@ -42,17 +41,34 @@ function createImgCard(image){
                 likes : image.likes
             })
         })
+        .then(response => response.json())
+        .then(function(json){
+            numOfLike.innerText = json.likes
+           
+        })
+
     })
 
     let commentList = document.createElement("ul")
     commentList.setAttribute("class", "comments")
     commentList.setAttribute("id", image.id)
 
+    let commentsArray = image.comments
+
+    if(commentsArray !== undefined){
+        for (comment of commentsArray){
+            let commentContent = document.createElement("li")
+            commentContent.innerText = comment.content
+        
+            commentList.append(commentContent)
+        } 
+    }
+
     let commentForm = document.createElement("form")
     commentForm.setAttribute("class", "comment-form")
     commentForm.addEventListener("submit", function(event){
         let inputContent = commentForm.comment.value
-
+        event.preventDefault()
         fetch(`http://localhost:3000/comments`,{
             method:"POST",
             headers:{
@@ -64,7 +80,11 @@ function createImgCard(image){
             })
         })
         .then(response => response.json())
-        .then(json => displayComment(json))
+        .then(function(newSaveComment){
+            let commentContent = document.createElement("li")
+            commentContent.innerText = newSaveComment.content
+    
+            commentList.append(commentContent)})
     
     })
 
@@ -83,20 +103,28 @@ function createImgCard(image){
 }
 
 
-function displayComment (comment){
-    let belongedToCommentList = document.getElementById(comment.imageId)
 
-    let commentContent = document.createElement("li")
-    commentContent.innerText = comment.content
+function createNewPost (){
+    let postForm = document.querySelector(".comment-form")
+    postForm.addEventListener('submit', function(event){
+        event.preventDefault()
 
-    belongedToCommentList.append(commentContent)
+        fetch(`http://localhost:3000/images`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                title: postForm.title.value,
+                likes : 0,
+                image: postForm.image.value
+            })
+        })
+        .then(response => response.json())
+        .then(json => createImgCard(json))
+        
+    })
 }
-
-// function createNewPost (){
-
-// }
-
-
 
 function displayMainPage(){
 fetch("http://localhost:3000/images")
@@ -106,17 +134,9 @@ fetch("http://localhost:3000/images")
     .then(function(images){
         let imagesArray = images
         for(image of imagesArray) createImgCard(image)
-        
-    })
-
-fetch("http://localhost:3000/comments")
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(comments){
-        let commentsArray = comments
-        for (comment of commentsArray) displayComment(comment)
     })
 }
+
+
 
 displayMainPage()
