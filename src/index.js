@@ -30,6 +30,19 @@ function createImgCard(image){
     likeButton.setAttribute("class", "like-button")
     likeButton.innerText = "♥"
     likesSection.append(numOfLike, likeButton)
+    likeButton.addEventListener('click', function(){
+        image.likes ++
+        console.log(image.likes)
+        fetch(`http://localhost:3000/images/${image.id}`,{
+            method:"PATCH",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                likes : image.likes
+            })
+        })
+    })
 
     let commentList = document.createElement("ul")
     commentList.setAttribute("class", "comments")
@@ -37,9 +50,27 @@ function createImgCard(image){
 
     let commentForm = document.createElement("form")
     commentForm.setAttribute("class", "comment-form")
+    commentForm.addEventListener("submit", function(event){
+        let inputContent = commentForm.comment.value
+
+        fetch(`http://localhost:3000/comments`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                content: inputContent,
+                imageId: image.id
+            })
+        })
+        .then(response => response.json())
+        .then(json => displayComment(json))
+    
+    })
 
     let formInput = document.createElement("input")
     formInput.setAttribute("class", "comment-input")
+    formInput.setAttribute("name","comment")
     formInput.setAttribute("type","text")
     formInput.setAttribute("placeholder","Leave your comment here")
 
@@ -52,6 +83,22 @@ function createImgCard(image){
 }
 
 
+function displayComment (comment){
+    let belongedToCommentList = document.getElementById(comment.imageId)
+
+    let commentContent = document.createElement("li")
+    commentContent.innerText = comment.content
+
+    belongedToCommentList.append(commentContent)
+}
+
+// function createNewPost (){
+
+// }
+
+
+
+function displayMainPage(){
 fetch("http://localhost:3000/images")
     .then(function(response){
         return response.json()
@@ -62,16 +109,6 @@ fetch("http://localhost:3000/images")
         
     })
 
-function displayComment (comment){
-    let belongedToCommentList = document.getElementById(comment.imageId)
-
-    let commentContent = document.createElement("li")
-    commentContent.innerText = comment.content
-
-    belongedToCommentList.append(commentContent)
-
-}
-
 fetch("http://localhost:3000/comments")
     .then(function(response){
         return response.json()
@@ -79,5 +116,7 @@ fetch("http://localhost:3000/comments")
     .then(function(comments){
         let commentsArray = comments
         for (comment of commentsArray) displayComment(comment)
-        console.log(commentsArray)
     })
+}
+
+displayMainPage()
