@@ -15,6 +15,10 @@ function createImgCard(image){
         fetch(`http://localhost:3000/images/${image.id}`,{
             method:"DELETE"})
             .then(imgCard.remove())
+            .catch((error) => {
+                console.log(error)
+                alert("There is something wrong.....")
+              });
     })
 
 
@@ -56,6 +60,10 @@ function createImgCard(image){
             numOfLike.innerText = json.likes
            
         })
+        .catch((error) => {
+            console.log(error)
+            alert("There is something wrong.....")
+          });
 
     })
 
@@ -67,25 +75,9 @@ function createImgCard(image){
 
     if(commentsArray !== undefined){
         for (comment of commentsArray){
-            let commentLi = document.createElement("li")
-            let commentContent = document.createElement("p")
-            let delComment = document.createElement("button")
-           
-            commentContent.innerText = comment.content
-            commentContent.setAttribute("style","display: inline-block")
-            delComment.innerHTML = " X "
-            delComment.setAttribute("style","display: inline-block; float: right;")
-
-            delComment.addEventListener("click", function(event){
-                event.preventDefault()
-                fetch(`http://localhost:3000/comments/${comment.id}`,{
-                    method:"DELETE"})
-                    .then(commentLi.remove())
-            })
-
-
-            commentLi.append(commentContent, delComment)
-            commentList.append(commentLi)
+            let commentEl = displayComment(comment)
+        
+            commentList.append(commentEl)
         } 
     }
 
@@ -106,10 +98,14 @@ function createImgCard(image){
         })
         .then(response => response.json())
         .then(function(newSaveComment){
-            let commentContent = document.createElement("li")
-            commentContent.innerText = newSaveComment.content
-    
-            commentList.append(commentContent)})
+            commentContent = displayComment(newSaveComment)
+            commentList.append(commentContent)
+            commentForm.reset()
+        })
+        .catch((error) => {
+                console.log(error)
+                alert("There is something wrong.....")
+              });
     
     })
 
@@ -127,7 +123,25 @@ function createImgCard(image){
     imgCard.append(delCard,title, postImg, likesSection, commentList, commentForm)
 }
 
+function displayComment(comment){
+    let commentLi = document.createElement("li")
+    let commentContent = document.createElement("p")
+    let delComment = document.createElement("button")
+   
+    commentContent.innerText = comment.content
+    commentContent.setAttribute("style","display: inline-block")
+    delComment.innerHTML = " X "
+    delComment.setAttribute("style","display: inline-block; float: right;")
 
+    delComment.addEventListener("click", function(event){
+        event.preventDefault()
+        fetch(`http://localhost:3000/comments/${comment.id}`,{
+            method:"DELETE"})
+            .then(commentLi.remove())
+    })
+    commentLi.append(commentContent, delComment)
+    return commentLi
+}
 
 function createNewPost (postForm){
    
@@ -148,8 +162,12 @@ function createNewPost (postForm){
 
         .then(function(json){
                 createImgCard(json)
+                postForm.reset()
             })
-    
+        .catch((error) => {
+                console.log(error)
+                alert("There is something wrong.....")
+              });
 }
 
 function displayMainPage(){
@@ -161,6 +179,10 @@ function displayMainPage(){
             let imagesArray = images
             for(image of imagesArray) createImgCard(image)
         })
+        .catch((error) => {
+            console.log(error)
+            alert("There is something wrong.....")
+          });
 
     let postForm = document.querySelector(".comment-form")
     postForm.addEventListener('submit', function(event){

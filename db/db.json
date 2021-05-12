@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Coder dog",
-      "likes": 16,
+      "likes": 17,
       "image": "./assets/coder-dog.png"
     },
     {
@@ -72,9 +72,14 @@
       "id": 21
     },
     {
-      "content": "try to del this",
+      "content": "sdffs",
       "imageId": 1,
       "id": 22
+    },
+    {
+      "content": "NICE",
+      "imageId": 1,
+      "id": 23
     }
   ]
 }
