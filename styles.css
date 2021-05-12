@@ -92,6 +92,10 @@ img {
 .comments li {
   margin: 2px 0;
   letter-spacing: 0.2px;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  padding: 0 10px;
 }
 
 .comment-form {

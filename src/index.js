@@ -7,6 +7,16 @@ function createImgCard(image){
     let imgSection = document.querySelector(".image-container")
     let imgCard = document.createElement("div")
     imgCard.setAttribute("class", "image-card")
+    let delCard = document.createElement("button")
+     
+    delCard.innerHTML = " X "
+    delCard.setAttribute("style","display: inline-block; float: right;")
+    delCard.addEventListener("click", function(){
+        fetch(`http://localhost:3000/images/${image.id}`,{
+            method:"DELETE"})
+            .then(imgCard.remove())
+    })
+
 
     imgSection.append(imgCard)
 
@@ -57,10 +67,25 @@ function createImgCard(image){
 
     if(commentsArray !== undefined){
         for (comment of commentsArray){
-            let commentContent = document.createElement("li")
+            let commentLi = document.createElement("li")
+            let commentContent = document.createElement("p")
+            let delComment = document.createElement("button")
+           
             commentContent.innerText = comment.content
-        
-            commentList.append(commentContent)
+            commentContent.setAttribute("style","display: inline-block")
+            delComment.innerHTML = " X "
+            delComment.setAttribute("style","display: inline-block; float: right;")
+
+            delComment.addEventListener("click", function(event){
+                event.preventDefault()
+                fetch(`http://localhost:3000/comments/${comment.id}`,{
+                    method:"DELETE"})
+                    .then(commentLi.remove())
+            })
+
+
+            commentLi.append(commentContent, delComment)
+            commentList.append(commentLi)
         } 
     }
 
@@ -99,16 +124,13 @@ function createImgCard(image){
     commentButton.innerText = "Post"
 
     commentForm.append(formInput, commentButton)
-    imgCard.append(title, postImg, likesSection, commentList, commentForm)
+    imgCard.append(delCard,title, postImg, likesSection, commentList, commentForm)
 }
 
 
 
-function createNewPost (){
-    let postForm = document.querySelector(".comment-form")
-    postForm.addEventListener('submit', function(event){
-        event.preventDefault()
-
+function createNewPost (postForm){
+   
         fetch(`http://localhost:3000/images`,{
             method:"POST",
             headers:{
@@ -116,27 +138,36 @@ function createNewPost (){
             },
             body: JSON.stringify({
                 title: postForm.title.value,
-                likes : 0,
+                likes: 0,
                 image: postForm.image.value
             })
         })
-        .then(response => response.json())
-        .then(json => createImgCard(json))
-        
-    })
+         .then(function (response) {
+            return response.json();
+            })
+
+        .then(function(json){
+                createImgCard(json)
+            })
+    
 }
 
 function displayMainPage(){
-fetch("http://localhost:3000/images")
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(images){
-        let imagesArray = images
-        for(image of imagesArray) createImgCard(image)
+    fetch("http://localhost:3000/images")
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(images){
+            let imagesArray = images
+            for(image of imagesArray) createImgCard(image)
+        })
+
+    let postForm = document.querySelector(".comment-form")
+    postForm.addEventListener('submit', function(event){
+        event.preventDefault()
+        createNewPost(postForm)
     })
 }
-
 
 
 displayMainPage()
